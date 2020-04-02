@@ -1,24 +1,24 @@
-package com.thread.baseDemo;
+package com.thread.safe;
 
 import java.util.concurrent.CountDownLatch;
 
 /**
- * @description: 线程不安全实例
- * <多线程对同一值进行修改，没有同步>:
- * 比如：有两个线程同时查询 number的值为10，并各自执行++操作，最后又将11赋给了number，这样就导致number的值只自加了一次。
- * 与实际执行逻辑不符。导致线程不安全。
+ * @description: 将 线程不安全实例 改造为线程安全 by synchronized
  * @author: Yeds
  * @create: 2020-04-01 09:40
  **/
 public class UnSafeThreadDemo {
+    // volatile 虽然有可见性，但不具有原子性
+//    private static  volatile UnSafeThreadDemo int number = 0;
     private static int number = 0;
 
     // 由于线程为执行完毕，sout已经执行。so 引入  CountDownLatch
     private static CountDownLatch countDownLatch = new CountDownLatch(10);
 
-    public static void addNumber() {
+    public static synchronized void addNumber() {
         number++;
     }
+
 
     public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < 10; i++) {
